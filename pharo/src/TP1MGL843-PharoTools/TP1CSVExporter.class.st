@@ -63,27 +63,28 @@ TP1CSVExporter class >> exportToDocuments [
 
 { #category : 'exporting' }
 TP1CSVExporter class >> locFromMethod: m [
-	| a file text segment start end |
+  | a file ref text start stop segment |
+  (m respondsTo: #sourceAnchor) ifFalse: [ ^ 0 ].
+  a := m sourceAnchor.
+  a ifNil: [ ^ 0 ].
 
-	(m respondsTo: #sourceAnchor) ifFalse: [ ^ 0 ].
-	a := m sourceAnchor.
-	a ifNil: [ ^ 0 ].
+  (((a respondsTo: #fileName) and: [ a respondsTo: #startPos ])
+     and: [ a respondsTo: #endPos ]) ifFalse: [ ^ 0 ].
 
-	(a respondsTo: #fileName) ifFalse: [ ^ 0 ].
-	(a respondsTo: #startPos) ifFalse: [ ^ 0 ].
-	(a respondsTo: #endPos) ifFalse: [ ^ 0 ].
+  file := a fileName.
+  start := a startPos.
+  stop := a endPos.
 
-	file := (FileLocator workingDirectory / a fileName) asFileReference.
-	file exists ifFalse: [ ^ 0 ].
+  ref := (self repoRoot / file) asFileReference.
+  ref exists ifFalse: [ ^ 0 ].
 
-	text := file contents.
-	start := a startPos max: 1.
-	end := a endPos min: text size.
-	(end < start) ifTrue: [ ^ 0 ].
+  text := ref contents.
+  (start isNil or: [ stop isNil ]) ifTrue: [ ^ 0 ].
+  (start <= 0 or: [ stop <= 0 or: [ stop < start ] ]) ifTrue: [ ^ 0 ].
+  (stop > text size) ifTrue: [ stop := text size ].
 
-	segment := text copyFrom: start to: end.
-	^ (segment occurrencesOf: Character lf) + 1
-
+  segment := text copyFrom: start to: stop.
+  ^ segment lines size
 ]
 
 { #category : 'exporting' }
@@ -113,8 +114,14 @@ TP1CSVExporter class >> locFromMethod: m repoRoot: repoRoot [ [
 ]
 
 { #category : 'exporting' }
-TP1CSVExporter class >> repoRoot [ [
-	"Racine du projet cloné (à adapter si besoin). Option simple: dossier du working directory."
-	^ FileLocator workingDirectory
-]
+TP1CSVExporter class >> repoRoot [
+  | iceberg |
+  iceberg := FileLocator imageDirectory / 'pharo-local' / 'iceberg'.
+  (iceberg exists and: [ iceberg isDirectory ]) ifFalse: [
+    ^ FileLocator workingDirectory
+  ].
+
+  ^ (iceberg directories
+      detect: [ :d | (d / 'pharo' / 'scripts' / '00-bootstrap.st') exists ]
+      ifNone: [ FileLocator workingDirectory ])
 ]
