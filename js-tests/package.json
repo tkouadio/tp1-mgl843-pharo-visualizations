@@ -1,0 +1,11 @@
+{
+  "name": "tp1-mgl843-pharo-visualizations-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
