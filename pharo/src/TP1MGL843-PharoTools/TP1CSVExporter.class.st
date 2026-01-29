@@ -7,18 +7,27 @@ Class {
 
 { #category : 'exporting' }
 TP1CSVExporter class >> classMetricsRows [
-  ^ TP1ModelGateway classes collect: [ :c |
-      | className attrs meths loc |
-      className := (c respondsTo: #name) ifTrue: [ c name ] ifFalse: [ c asString ].
-      attrs := (c respondsTo: #numberOfAttributes) ifTrue: [ c numberOfAttributes ] ifFalse: [ 0 ].
-      meths := (c respondsTo: #numberOfMethods) ifTrue: [ c numberOfMethods ] ifFalse: [ 0 ].
+    ^ TP1ModelGateway classes collect: [ :c |
+        | className attrs meths loc |
 
-      loc := (c respondsTo: #methods)
-        ifTrue: [ (c methods collect: [ :m | self locFromMethod: m ]) sum ]
-        ifFalse: [ 0 ].
+        className := (c respondsTo: #name)
+            ifTrue: [ c name ]
+            ifFalse: [ c asString ].
 
-      { className. attrs. meths. loc }
-  ].
+        attrs := (c respondsTo: #numberOfAttributes)
+            ifTrue: [ c numberOfAttributes ]
+            ifFalse: [ 0 ].
+
+        meths := (c respondsTo: #numberOfMethods)
+            ifTrue: [ c numberOfMethods ]
+            ifFalse: [ 0 ].
+
+        loc := (c respondsTo: #numberOfLinesOfCode)
+            ifTrue: [ c numberOfLinesOfCode ]
+            ifFalse: [ 0 ].
+
+        { className. attrs. meths. loc }
+    ].
 
 ]
 
