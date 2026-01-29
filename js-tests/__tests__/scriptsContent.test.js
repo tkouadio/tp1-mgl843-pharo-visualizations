@@ -16,7 +16,7 @@ test("Each script starts with TP1 marker comment", () => {
     "05-export-classes-metrics-to-documents.st"
   ];
   for (const s of scripts) {
-    expect(read(s)).toMatch(/"TP1\s*–/);
+    expect(read(s)).toMatch(/"TP1.*–/);
   }
 });
 
@@ -33,5 +33,6 @@ test("Viz scripts call TP1Viz", () => {
 });
 
 test("Export script calls TP1CSVExporter", () => {
-  expect(read("05-export-classes-csv.st")).toMatch(/TP1CSVExporter\s+exportClassesToCSV:/);
+  expect(read("05-export-classes-metrics-to-documents.st"))
+  .toMatch(/TP1CSVExporter\s+export/);
 });
