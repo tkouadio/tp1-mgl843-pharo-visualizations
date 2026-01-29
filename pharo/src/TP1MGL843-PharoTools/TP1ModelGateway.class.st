@@ -19,35 +19,37 @@ TP1ModelGateway class >> model [
 
 { #category : 'model-access' }
 TP1ModelGateway class >> tsFiles [
-    | m |
-    m := self model.
-    (m respondsTo: #allFiles) ifTrue: [ ^ m perform: #allFiles ].
-    (m respondsTo: #allSourceFiles) ifTrue: [ ^ m perform: #allSourceFiles ].
-    (m respondsTo: #allModelFiles) ifTrue: [ ^ m perform: #allModelFiles ].
-    ^ #()
+  | m |
+  m := self model.
+  m ifNil: [ ^ #() ].
+
+  ^ (m respondsTo: #allModelEntities)
+      ifTrue: [ m allModelEntities select: [ :e | e className includesSubstring: 'FileAnchor' ] ]
+      ifFalse: [ #() ].
 ]
 
 { #category : 'model-access' }
 TP1ModelGateway class >> tsFunctions [
-    | m |
-    m := self model.
-    (m respondsTo: #allModelFunctions) ifTrue: [ ^ m perform: #allModelFunctions ].
-    (m respondsTo: #allFunctions) ifTrue: [ ^ m perform: #allFunctions ].
-    ^ #()
+  | m |
+  m := self model.
+  m ifNil: [ ^ #() ].
+
+  (m respondsTo: #allModelFunctions) ifTrue: [ ^ m perform: #allModelFunctions ].
+
+  ^ (m respondsTo: #allModelEntities)
+      ifTrue: [ m allModelEntities select: [ :e | e className includesSubstring: 'Function' ] ]
+      ifFalse: [ #() ].
 ]
 
 { #category : 'model-access' }
 TP1ModelGateway class >> tsMethods [
-    | m |
-    m := self model.
+  | m |
+  m := self model.
+  m ifNil: [ ^ #() ].
 
-    (m respondsTo: #allModelMethods) ifTrue: [ ^ m perform: #allModelMethods ].
-    (m respondsTo: #allMethods) ifTrue: [ ^ m perform: #allMethods ].
+  (m respondsTo: #allModelMethods) ifTrue: [ ^ m perform: #allModelMethods ].
 
-    ^ (self classes flatCollect: [ :c |
-        (c respondsTo: #methods) ifTrue: [ c methods ]
-        ifFalse: [
-            (c respondsTo: #localMethods) ifTrue: [ c localMethods ] ifFalse: [ #() ]
-        ]
-    ])
+  ^ (m respondsTo: #allModelEntities)
+      ifTrue: [ m allModelEntities select: [ :e | e className includesSubstring: 'Method' ] ]
+      ifFalse: [ #() ].
 ]
