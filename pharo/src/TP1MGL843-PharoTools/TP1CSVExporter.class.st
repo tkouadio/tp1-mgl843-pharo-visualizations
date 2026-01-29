@@ -7,40 +7,34 @@ Class {
 
 { #category : 'exporting' }
 TP1CSVExporter class >> classMetricsRows [
-    ^ TP1ModelGateway classes collect: [ :c |
-        | className attrs meths loc fallbackLoc |
-        
-        className := (c respondsTo: #name)
-            ifTrue: [ c name ]
-            ifFalse: [ c asString ].
-        
-        attrs := (c respondsTo: #numberOfAttributes)
-            ifTrue: [ c numberOfAttributes ]
-            ifFalse: [ 0 ].
-        
-        meths := (c respondsTo: #numberOfMethods)
-            ifTrue: [ c numberOfMethods ]
-            ifFalse: [ 0 ].
+	^ TP1ModelGateway classes collect: [ :c |
+		| className attrs meths loc |
 
-        loc := (c respondsTo: #numberOfLinesOfCode)
-            ifTrue: [ c numberOfLinesOfCode ]
-            ifFalse: [ 0 ].
+		className := (c respondsTo: #name)
+			ifTrue: [ c name ]
+			ifFalse: [ c asString ].
 
-        "Fallback si Moose ne peut pas calculer les LOC (ex: sourceAnchor noname)"
-        (loc = 0 and: [ c respondsTo: #methods ]) ifTrue: [
-            fallbackLoc := (c methods
-                collect: [ :m |
-                    | a |
-                    a := (m respondsTo: #sourceAnchor) ifTrue: [ m sourceAnchor ] ifFalse: [ nil ].
-                    (a notNil
-                        and: [ (a respondsTo: #startPos) and: [ a respondsTo: #endPos ] ])
-                        ifTrue: [ ((a endPos - a startPos) max: 0) ]
-                        ifFalse: [ 0 ] ]) sum.
-            loc := fallbackLoc.
-        ].
+		attrs := (c respondsTo: #numberOfAttributes)
+			ifTrue: [ c numberOfAttributes ]
+			ifFalse: [ 0 ].
 
-        { className. attrs. meths. loc }
-    ].
+		meths := (c respondsTo: #numberOfMethods)
+			ifTrue: [ c numberOfMethods ]
+			ifFalse: [ 0 ].
+
+		loc := (c respondsTo: #numberOfLinesOfCode)
+			ifTrue: [ c numberOfLinesOfCode ]
+			ifFalse: [ 0 ].
+
+		"Fallback LOC en LIGNES (pas en caractères)"
+		(loc = 0 and: [ c respondsTo: #methods ]) ifTrue: [
+			loc := (c methods collect: [ :m |
+				self locFromMethod: m repoRoot: self repoRoot
+			]) sum.
+		].
+
+		{ className. attrs. meths. loc }
+	].
 
 ]
 
@@ -65,4 +59,37 @@ TP1CSVExporter class >> exportToDocuments [
     | file |
     file := FileLocator documents / 'tp1_classes_metrics.csv'.
     ^ self exportClassesMetricsToCSVAt: file
+]
+
+{ #category : 'exporting' }
+TP1CSVExporter class >> locFromMethod: m repoRoot: repoRoot [ [
+	| a fileRef text segment start end |
+	(m respondsTo: #sourceAnchor) ifFalse: [ ^ 0 ].
+	a := m sourceAnchor.
+	a ifNil: [ ^ 0 ].
+
+	((a respondsTo: #startPos) and: [ a respondsTo: #endPos ]) ifFalse: [ ^ 0 ].
+
+	"Essaye de retrouver le fichier du sourceAnchor"
+	(a respondsTo: #fileName) ifFalse: [ ^ 0 ].
+	fileRef := (repoRoot / a fileName) asFileReference.
+	fileRef exists ifFalse: [ ^ 0 ].
+
+	text := fileRef contents.
+	start := a startPos max: 1.
+	end := a endPos min: text size.
+	(end < start) ifTrue: [ ^ 0 ].
+
+	segment := (text copyFrom: start to: end).
+
+	"LOC = nb de lignes du segment"
+	^ (segment occurrencesOf: Character lf) + 1
+]
+]
+
+{ #category : 'exporting' }
+TP1CSVExporter class >> repoRoot [ [
+	"Racine du projet cloné (à adapter si besoin). Option simple: dossier du working directory."
+	^ FileLocator workingDirectory
+]
 ]
