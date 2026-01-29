@@ -8,18 +8,18 @@ Class {
 { #category : 'exporting' }
 TP1CSVExporter class >> classMetricsRows [
   ^ TP1ModelGateway classes collect: [ :c |
-    | className attrs meths loc |
-    className := (c respondsTo: #name) ifTrue: [ c name ] ifFalse: [ c asString ].
-    attrs := (c respondsTo: #numberOfAttributes) ifTrue: [ c numberOfAttributes ] ifFalse: [ 0 ].
-    meths := (c respondsTo: #numberOfMethods) ifTrue: [ c numberOfMethods ] ifFalse: [ 0 ].
+      | className attrs meths loc |
+      className := (c respondsTo: #name) ifTrue: [ c name ] ifFalse: [ c asString ].
+      attrs := (c respondsTo: #numberOfAttributes) ifTrue: [ c numberOfAttributes ] ifFalse: [ 0 ].
+      meths := (c respondsTo: #numberOfMethods) ifTrue: [ c numberOfMethods ] ifFalse: [ 0 ].
 
-    loc := 0.
-    (c respondsTo: #methods) ifTrue: [
-      loc := (c methods collect: [ :m | self locFromMethod: m ]) sum
-    ].
+      loc := (c respondsTo: #methods)
+        ifTrue: [ (c methods collect: [ :m | self locFromMethod: m ]) sum ]
+        ifFalse: [ 0 ].
 
-    { className. attrs. meths. loc }
+      { className. attrs. meths. loc }
   ].
+
 ]
 
 { #category : 'exporting' }
@@ -51,24 +51,26 @@ TP1CSVExporter class >> lineCountOf: aString [
   aString ifNil: [ ^ 0 ].
   aString isEmpty ifTrue: [ ^ 0 ].
 
-  s := aString copyReplaceAll: (String with: Character cr) with: (String with: Character lf).
+  "Normalise CRLF et CR en LF"
+  s := aString copyReplaceAll: (String with: Character cr with: Character lf) with: (String with: Character lf).
+  s := s copyReplaceAll: (String with: Character cr) with: (String with: Character lf).
+
   ^ (s occurrencesOf: Character lf) + 1
+
 ]
 
 { #category : 'exporting' }
 TP1CSVExporter class >> locFromMethod: m [
-  | txt |
-  txt := (m respondsTo: #sourceText)
-    ifTrue: [ m sourceText ]
-    ifFalse: [
-      (m respondsTo: #fullSourceText)
-        ifTrue: [ m fullSourceText ]
-        ifFalse: [ nil ] ].
+  | text |
+  "1) Meilleure source: le texte déjà en mémoire dans le modèle"
+  (m respondsTo: #sourceText) ifTrue: [
+    text := m sourceText.
+    ^ self lineCountOf: text
+  ].
 
-  txt ifNotNil: [ ^ self lineCountOf: txt ].
-
-  "Fallback si jamais pas de texte"
+  "2) Sinon, pas de LOC dispo"
   ^ 0
+
 ]
 
 { #category : 'exporting' }
