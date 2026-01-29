@@ -2,9 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
 
 jobs:
   jest:
@@ -15,18 +13,16 @@ jobs:
         working-directory: js-tests
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-          cache-dependency-path: js-tests/package-lock.json
 
-      - name: Install
-        run: npm ci
+      - name: Install dependencies
+        run: npm install
 
-      - name: Test
-        run: npm test
+      - name: Run tests
+        run: node --experimental-vm-modules ./node_modules/jest/bin/jest.js
