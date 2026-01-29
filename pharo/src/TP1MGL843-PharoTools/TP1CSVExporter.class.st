@@ -69,9 +69,9 @@ TP1CSVExporter class >> locFromMethod: m [
 	a := m sourceAnchor.
 	a ifNil: [ ^ 0 ].
 
-	((a respondsTo: #fileName)
-		and: [ a respondsTo: #startPos ]
-		and: [ a respondsTo: #endPos ]) ifFalse: [ ^ 0 ].
+	(a respondsTo: #fileName) ifFalse: [ ^ 0 ].
+	(a respondsTo: #startPos) ifFalse: [ ^ 0 ].
+	(a respondsTo: #endPos) ifFalse: [ ^ 0 ].
 
 	file := (FileLocator workingDirectory / a fileName) asFileReference.
 	file exists ifFalse: [ ^ 0 ].
@@ -82,9 +82,8 @@ TP1CSVExporter class >> locFromMethod: m [
 	(end < start) ifTrue: [ ^ 0 ].
 
 	segment := text copyFrom: start to: end.
-
-	"LOC réel = nombre de lignes"
 	^ (segment occurrencesOf: Character lf) + 1
+
 ]
 
 { #category : 'exporting' }
