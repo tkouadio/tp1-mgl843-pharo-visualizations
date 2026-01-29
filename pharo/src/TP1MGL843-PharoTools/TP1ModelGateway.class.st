@@ -13,8 +13,9 @@ TP1ModelGateway class >> classes [
 
 { #category : 'model-access' }
 TP1ModelGateway class >> model [
-    "Retourne le modèle Moose/FAMIX chargé dans l'image."
-    ^ MooseModel root first
+  ^ MooseModel root
+      detect: [ :m | (m respondsTo: #name) and: [ m name = 'TP1-MGL843-model' ] ]
+      ifNone: [ MooseModel root first ].
 ]
 
 { #category : 'model-access' }
