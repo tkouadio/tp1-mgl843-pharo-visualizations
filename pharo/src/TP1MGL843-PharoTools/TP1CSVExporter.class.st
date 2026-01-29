@@ -26,10 +26,10 @@ TP1CSVExporter class >> classMetricsRows [
 			ifTrue: [ c numberOfLinesOfCode ]
 			ifFalse: [ 0 ].
 
-		"Fallback LOC en LIGNES (pas en caractères)"
+		"Fallback robuste en LIGNES"
 		(loc = 0 and: [ c respondsTo: #methods ]) ifTrue: [
 			loc := (c methods collect: [ :m |
-				self locFromMethod: m repoRoot: self repoRoot
+				self locFromMethod: m
 			]) sum.
 		].
 
@@ -59,6 +59,32 @@ TP1CSVExporter class >> exportToDocuments [
     | file |
     file := FileLocator documents / 'tp1_classes_metrics.csv'.
     ^ self exportClassesMetricsToCSVAt: file
+]
+
+{ #category : 'exporting' }
+TP1CSVExporter class >> locFromMethod: m [
+	| a file text segment start end |
+
+	(m respondsTo: #sourceAnchor) ifFalse: [ ^ 0 ].
+	a := m sourceAnchor.
+	a ifNil: [ ^ 0 ].
+
+	((a respondsTo: #fileName)
+		and: [ a respondsTo: #startPos ]
+		and: [ a respondsTo: #endPos ]) ifFalse: [ ^ 0 ].
+
+	file := (FileLocator workingDirectory / a fileName) asFileReference.
+	file exists ifFalse: [ ^ 0 ].
+
+	text := file contents.
+	start := a startPos max: 1.
+	end := a endPos min: text size.
+	(end < start) ifTrue: [ ^ 0 ].
+
+	segment := text copyFrom: start to: end.
+
+	"LOC réel = nombre de lignes"
+	^ (segment occurrencesOf: Character lf) + 1
 ]
 
 { #category : 'exporting' }
