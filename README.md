@@ -138,4 +138,3 @@ TP réalisé dans le cadre du cours **MGL843 – Architecture logicielle**
 ÉTS – Hiver 2026
 
 ````
-
