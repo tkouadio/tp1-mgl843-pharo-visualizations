@@ -23,7 +23,7 @@ Ce dépôt contient les **outils Pharo/Moose** développés dans le cadre du
 tp1-mgl843-pharo-visualizations/
 │
 ├─ pharo/
-│  ├─ scripts/               # Scripts exécutables (FileIn)
+│  ├─ scripts/               # Scripts exécutables
 │  │  ├─ 00-bootstrap.st
 │  │  ├─ 01-open-classes-map.st
 │  │  ├─ 02-open-functions-map.st
@@ -138,3 +138,4 @@ TP réalisé dans le cadre du cours **MGL843 – Architecture logicielle**
 ÉTS – Hiver 2026
 
 ````
+
