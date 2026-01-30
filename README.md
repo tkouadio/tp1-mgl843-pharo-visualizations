@@ -1,4 +1,3 @@
-````markdown
 # TP1 – Visualisations Moose / Pharo (MGL843)
 
 Ce dépôt contient les **outils Pharo/Moose** développés dans le cadre du  
@@ -7,8 +6,6 @@ Ce dépôt contient les **outils Pharo/Moose** développés dans le cadre du
 * 📊 de **visualiser** un modèle **FAMIX TypeScript** (classes, méthodes, fonctions, fichiers)
 * 📁 de **générer un fichier CSV** de métriques (attributs, méthodes, LOC)
 * 🧪 de **valider la structure du dépôt** via des tests automatisés (GitHub Actions)
-
----
 
 ## 🧰 Technologies utilisées
 
@@ -19,8 +16,6 @@ Ce dépôt contient les **outils Pharo/Moose** développés dans le cadre du
 * **NeoCSV** (export CSV)
 * **Node.js + Jest** (tests CI)
 * **GitHub Actions**
-
----
 
 ## 📁 Structure du dépôt
 
@@ -37,7 +32,7 @@ tp1-mgl843-pharo-visualizations/
 │  │  └─ 05-export-classes-metrics-to-documents.st
 │  │
 │  └─ src/                   # Code Smalltalk versionné
-│     └─ TP1MGL843-PharoTools/
+│     ├─ TP1MGL843-PharoTools/
 │     └─ TP1MGL843-PharoTools-Tests/
 │
 ├─ js-tests/                 # Tests automatisés (CI)
@@ -50,8 +45,6 @@ tp1-mgl843-pharo-visualizations/
    └─ ci.yml                 # Pipeline GitHub Actions
 ````
 
----
-
 ## ✅ Prérequis (OBLIGATOIRES)
 
 Avant d’utiliser les visualisations ou l’export CSV,
@@ -62,16 +55,12 @@ Avant d’utiliser les visualisations ou l’export CSV,
 * Installer **Pharo Launcher**
 * Créer / ouvrir une image : **Moose Suite 12 – TypeScript**
 
----
-
 ## 2️⃣ Importer le projet TypeScript dans Moose (OBLIGATOIRE)
 
 ⚠️ **Sans cette étape, les métriques (LOC, méthodes, etc.) peuvent être à 0**
 
 Tutoriel officiel :
 👉 [https://fuhrmanator.github.io/tuto-famix-ts/](https://fuhrmanator.github.io/tuto-famix-ts/)
-
----
 
 ## ▶️ Utilisation des visualisations
 
@@ -82,8 +71,6 @@ Ouvrir un **Moose Playground** ou utiliser **FileIn** dans Pharo.
 ```smalltalk
 "00-bootstrap.st"
 ```
-
----
 
 ### 🟦 Visualisation des classes
 
@@ -96,15 +83,11 @@ TP1Viz openClassesMap.
 * Couleur = LOC
 * 🔍 Cliquable
 
----
-
 ### 🟩 Visualisation des méthodes
 
 ```smalltalk
 TP1Viz openMethodsMap.
 ```
-
----
 
 ### 🟨 Visualisation des fonctions
 
@@ -112,15 +95,11 @@ TP1Viz openMethodsMap.
 TP1Viz openFunctionsMap.
 ```
 
----
-
 ### 🟥 Visualisation des fichiers
 
 ```smalltalk
 TP1Viz openFilesMap.
 ```
-
----
 
 ## 📤 Génération du CSV
 
@@ -134,8 +113,6 @@ TP1CSVExporter exportToDocuments.
 Documents/tp1_classes_metrics.csv
 ```
 
----
-
 ## 🧪 Tests automatisés (CI)
 
 ```bash
@@ -144,14 +121,10 @@ npm install
 npm test
 ```
 
----
-
 ## 👥 Travail d’équipe
 
 👉 **Le modèle Moose n’est pas versionné**
 Chaque membre importe le projet TypeScript localement.
-
----
 
 ## 📚 Références
 
@@ -159,16 +132,9 @@ Chaque membre importe le projet TypeScript localement.
 * [https://moosetechnology.org/](https://moosetechnology.org/)
 * [https://github.com/ObjectProfile/Roassal3](https://github.com/ObjectProfile/Roassal3)
 
----
-
 ## ✍️ Auteur
 
 TP réalisé dans le cadre du cours **MGL843 – Architecture logicielle**
 ÉTS – Hiver 2026
 
-```
-
----
-
-
-
+````
