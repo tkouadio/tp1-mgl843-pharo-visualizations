@@ -61,7 +61,7 @@ Avant d’utiliser les visualisations ou l’export CSV,
 
 Tutoriel officiel :
 👉 [https://fuhrmanator.github.io/tuto-famix-ts/](https://fuhrmanator.github.io/tuto-famix-ts/)
-⚠️ Charger le modele TP1-MGL843-model.json fourni
+👉 Charger le modele TP1-MGL843-model.json fourni
 
 ## ▶️ Utilisation des visualisations
 
@@ -137,4 +137,5 @@ Chaque membre importe le projet TypeScript localement.
 
 TP réalisé dans le cadre du cours **MGL843 – Architecture logicielle**
 ÉTS – Hiver 2026
+
 
