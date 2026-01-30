@@ -136,5 +136,3 @@ Chaque membre importe le projet TypeScript localement.
 
 TP réalisé dans le cadre du cours **MGL843 – Architecture logicielle**
 ÉTS – Hiver 2026
-
-````
