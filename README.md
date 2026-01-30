@@ -1,36 +1,3 @@
-## 🔴 Pourquoi l’erreur se produit
-
-Dans GitHub :
-
-```markdown
----
-# TP1 – Visualisations Moose / Pharo (MGL843)
-...
----
-```
-
-👉 Les `---` au début indiquent à GitHub :
-
-> « ce qui suit est du **YAML** »
-
-Or ton contenu **n’est pas du YAML** (emojis, `**bold**`, `:` dans le texte, etc.), d’où l’erreur :
-
-> `did not find expected alphabetic or numeric character while scanning an alias`
-
----
-
-## ✅ Solution (la bonne)
-
-### ✔️ **Supprimer les délimiteurs YAML `---`**
-
-Un README **n’a pas besoin** de front-matter YAML sur GitHub.
-
----
-
-## ✅ README corrigé (fonctionne à 100 %)
-
-👉 **Copie-colle exactement ceci** comme contenu de ton `README.md` :
-
 ````markdown
 # TP1 – Visualisations Moose / Pharo (MGL843)
 
@@ -202,4 +169,5 @@ TP réalisé dans le cadre du cours **MGL843 – Architecture logicielle**
 ```
 
 ---
+
 
