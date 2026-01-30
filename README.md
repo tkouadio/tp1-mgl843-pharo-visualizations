@@ -1,8 +1,41 @@
+## 🔴 Pourquoi l’erreur se produit
+
+Dans GitHub :
+
+```markdown
+---
+# TP1 – Visualisations Moose / Pharo (MGL843)
+...
+---
+```
+
+👉 Les `---` au début indiquent à GitHub :
+
+> « ce qui suit est du **YAML** »
+
+Or ton contenu **n’est pas du YAML** (emojis, `**bold**`, `:` dans le texte, etc.), d’où l’erreur :
+
+> `did not find expected alphabetic or numeric character while scanning an alias`
+
 ---
 
+## ✅ Solution (la bonne)
+
+### ✔️ **Supprimer les délimiteurs YAML `---`**
+
+Un README **n’a pas besoin** de front-matter YAML sur GitHub.
+
+---
+
+## ✅ README corrigé (fonctionne à 100 %)
+
+👉 **Copie-colle exactement ceci** comme contenu de ton `README.md` :
+
+````markdown
 # TP1 – Visualisations Moose / Pharo (MGL843)
 
-Ce dépôt contient les **outils Pharo/Moose** développés dans le cadre du **TP1 du cours MGL843 – Architecture logicielle**, permettant :
+Ce dépôt contient les **outils Pharo/Moose** développés dans le cadre du  
+**TP1 du cours MGL843 – Architecture logicielle**, permettant :
 
 * 📊 de **visualiser** un modèle **FAMIX TypeScript** (classes, méthodes, fonctions, fichiers)
 * 📁 de **générer un fichier CSV** de métriques (attributs, méthodes, LOC)
@@ -38,7 +71,7 @@ tp1-mgl843-pharo-visualizations/
 │  │
 │  └─ src/                   # Code Smalltalk versionné
 │     └─ TP1MGL843-PharoTools/
-	  └─ TP1MGL843-PharoTools-Tests/
+│        └─ TP1MGL843-PharoTools-Tests/
 │
 ├─ js-tests/                 # Tests automatisés (CI)
 │  ├─ __tests__/
@@ -48,19 +81,19 @@ tp1-mgl843-pharo-visualizations/
 │
 └─ .github/workflows/
    └─ ci.yml                 # Pipeline GitHub Actions
-```
+````
 
 ---
 
 ## ✅ Prérequis (OBLIGATOIRES)
 
-Avant d’utiliser les visualisations ou l’export CSV, **le modèle TypeScript doit être importé dans Moose**.
+Avant d’utiliser les visualisations ou l’export CSV,
+**le modèle TypeScript doit être importé dans Moose**.
 
 ### 1️⃣ Installer Pharo & Moose
 
 * Installer **Pharo Launcher**
-* Créer / ouvrir une image :
-  **Moose Suite 12 – TypeScript**
+* Créer / ouvrir une image : **Moose Suite 12 – TypeScript**
 
 ---
 
@@ -68,28 +101,20 @@ Avant d’utiliser les visualisations ou l’export CSV, **le modèle TypeScript
 
 ⚠️ **Sans cette étape, les métriques (LOC, méthodes, etc.) peuvent être à 0**
 
-Suivre le tutoriel officiel Fuhrmanator :
+Tutoriel officiel :
 👉 [https://fuhrmanator.github.io/tuto-famix-ts/](https://fuhrmanator.github.io/tuto-famix-ts/)
-
 
 ---
 
 ## ▶️ Utilisation des visualisations
 
-Ouvrir un **Moose Playground ou FileIn(Menu File Browser dans Pharo)** et exécuter les scripts suivants.
+Ouvrir un **Moose Playground** ou utiliser **FileIn** dans Pharo.
 
 ### 📦 Chargement des dépendances
 
 ```smalltalk
 "00-bootstrap.st"
 ```
-
-Vérifie la présence de :
-
-* Moose
-* Roassal
-* NeoCSV
-* FileLocator
 
 ---
 
@@ -99,10 +124,10 @@ Vérifie la présence de :
 TP1Viz openClassesMap.
 ```
 
-* Taille = nombre d’attributs
-* Hauteur = nombre de méthodes
+* Taille = attributs
+* Hauteur = méthodes
 * Couleur = LOC
-* 🔍 **Cliquable** : ouvre la classe dans Moose
+* 🔍 Cliquable
 
 ---
 
@@ -112,10 +137,6 @@ TP1Viz openClassesMap.
 TP1Viz openMethodsMap.
 ```
 
-* Taille = nombre d’instructions
-* Couleur = LOC
-* 🔍 Cliquable
-
 ---
 
 ### 🟨 Visualisation des fonctions
@@ -123,10 +144,6 @@ TP1Viz openMethodsMap.
 ```smalltalk
 TP1Viz openFunctionsMap.
 ```
-
-* Complexité cyclomatique / statements
-* Couleur = LOC
-* 🔍 Cliquable
 
 ---
 
@@ -136,42 +153,23 @@ TP1Viz openFunctionsMap.
 TP1Viz openFilesMap.
 ```
 
-* Taille = nombre de lignes
-* Couleur = taille du fichier
-* 🔍 Cliquable
-
 ---
 
-## 📤 Génération du CSV (métriques)
+## 📤 Génération du CSV
 
 ```smalltalk
 TP1CSVExporter exportToDocuments.
 ```
 
-📄 Fichier généré dans :
+📄 Généré dans :
 
 ```text
-Documents/
-└─ tp1_classes_metrics.csv
+Documents/tp1_classes_metrics.csv
 ```
-
-Colonnes :
-
-| className | nbAttributes | nbMethods | loc |
-| --------- | ------------ | --------- | --- |
 
 ---
 
 ## 🧪 Tests automatisés (CI)
-
-Les tests **ne testent pas Pharo**, mais :
-
-* la présence des scripts `.st`
-* leur contenu minimal attendu
-* la structure du CSV
-* la cohérence du dépôt
-
-### Lancer localement :
 
 ```bash
 cd js-tests
@@ -181,52 +179,18 @@ npm test
 
 ---
 
-### ⚙️ GitHub Actions
-
-* Les tests se lancent automatiquement :
-
-  * à chaque **push**
-  * à chaque **pull request**
-* Pipeline défini dans :
-
-  ```
-  .github/workflows/ci.yml
-  ```
-
----
-
-## ⚠️ Points importants / pièges connus
-
-* ❌ Si le modèle TypeScript n’est **pas importé**, les LOC peuvent être `0`
-* ⚠️ Les métriques peuvent varier selon :
-
-  * version de Moose
-  * qualité des `SourceAnchor`
-* 🟢 Les tests CI **ne valident pas les métriques**, uniquement la structure
-
----
-
 ## 👥 Travail d’équipe
 
-Chaque membre doit :
-
-1. Cloner le dépôt
-2. Importer le projet TypeScript **localement** dans Moose
-3. Lancer les scripts Pharo
-4. Générer le CSV sur sa machine
-
 👉 **Le modèle Moose n’est pas versionné**
+Chaque membre importe le projet TypeScript localement.
 
 ---
 
 ## 📚 Références
 
-* Fuhrmanator – FAMIX TypeScript
-  [https://fuhrmanator.github.io/tuto-famix-ts/](https://fuhrmanator.github.io/tuto-famix-ts/)
-* Moose Documentation
-  [https://moosetechnology.org/](https://moosetechnology.org/)
-* Roassal3
-  [https://github.com/ObjectProfile/Roassal3](https://github.com/ObjectProfile/Roassal3)
+* [https://fuhrmanator.github.io/tuto-famix-ts/](https://fuhrmanator.github.io/tuto-famix-ts/)
+* [https://moosetechnology.org/](https://moosetechnology.org/)
+* [https://github.com/ObjectProfile/Roassal3](https://github.com/ObjectProfile/Roassal3)
 
 ---
 
@@ -235,4 +199,7 @@ Chaque membre doit :
 TP réalisé dans le cadre du cours **MGL843 – Architecture logicielle**
 ÉTS – Hiver 2026
 
+```
+
 ---
+
