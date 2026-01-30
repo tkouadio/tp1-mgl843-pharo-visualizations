@@ -38,7 +38,7 @@ tp1-mgl843-pharo-visualizations/
 │  │
 │  └─ src/                   # Code Smalltalk versionné
 │     └─ TP1MGL843-PharoTools/
-│        └─ TP1MGL843-PharoTools-Tests/
+│     └─ TP1MGL843-PharoTools-Tests/
 │
 ├─ js-tests/                 # Tests automatisés (CI)
 │  ├─ __tests__/
@@ -169,5 +169,6 @@ TP réalisé dans le cadre du cours **MGL843 – Architecture logicielle**
 ```
 
 ---
+
 
 
