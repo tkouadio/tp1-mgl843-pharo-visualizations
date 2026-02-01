@@ -1,7 +1,7 @@
 # TP1 – Visualisations Moose / Pharo (MGL843)
 
 Ce dépôt contient les **outils Pharo/Moose** développés dans le cadre du  
-**TP1 du cours MGL843 – Architecture logicielle**, permettant :
+**TP1 du cours MGL843 – Sujets avancés en conception logicielle**, permettant :
 
 * 📊 de **visualiser** un modèle **FAMIX TypeScript** (classes, méthodes, fonctions, fichiers)
 * 📁 de **générer un fichier CSV** de métriques (attributs, méthodes, LOC)
@@ -135,7 +135,8 @@ Chaque membre importe le projet TypeScript localement.
 
 ## ✍️ Auteur
 
-TP réalisé dans le cadre du cours **MGL843 – Architecture logicielle**
+TP réalisé dans le cadre du cours **MGL843 – Sujets avancés en conception logicielle**
 ÉTS – Hiver 2026
+
 
 
